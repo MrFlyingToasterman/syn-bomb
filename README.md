@@ -16,5 +16,8 @@ Automated SYN flooding tool.
 > "Windows Server 2008, you shall reboot now" <br>
 ~Anonymous
 
+# Preview
+![syn-bomb](/pic0.png?raw=true "syn-bomb")
+
 # License
 This is free (as in freedom) Software under GPLv3!
